@@ -7,11 +7,11 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # cmd tools
 RUN apt-get update -y && \
-	apt-get install -y wget \
-	curl \
-	vim \
-	s3cmd \
-	iputils-ping \
+    apt-get install -y wget \
+    curl \
+    vim \
+    s3cmd \
+    iputils-ping \
     git \
     systemd
 
