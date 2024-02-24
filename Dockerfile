@@ -1,4 +1,6 @@
-FROM ubuntu:22.04
+FROM ubuntu:24.04
+
+ARG ETCD_VER=v3.5.6
 
 WORKDIR /home/work
 
@@ -24,7 +26,6 @@ RUN cd /home/work && \
     rm -f ./miniconda.sh
 
 # etcd
-ENV ETCD_VER=v3.5.6
 ENV GITHUB_URL=https://github.com/etcd-io/etcd/releases/download
 ENV DOWNLOAD_URL=${GITHUB_URL}
 
@@ -36,8 +37,12 @@ RUN rm -f /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz && \
     mv /tmp/etcd-download-test/etcdctl /usr/local/bin/ && \
     rm -rf /tmp/etcd*
 
+# C++
+RUN apt-get install -y build-essential cmake gdb gcc libgtest-dev
+RUN git clone https://github.com/google/googletest && \
+    cd googletest && mkdir build && cd build && cmake .. && make && make install
+
 # cleanup
 RUN apt-get autoclean && \
     cat /dev/null > /root/.bash_history && \
     echo "alias ll='ls -lh'" >> /root/.bashrc
-
